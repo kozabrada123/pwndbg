@@ -237,6 +237,12 @@ async def test_tcache_bins_respects_heap_dereference_limit(ctrl: Controller) -> 
     assert len(tcache_bin.fd_chain) == 12
     assert tcache_bin.fd_chain[-1] == 0
 
+    print(pwndbg.libc.version())
+    print(await ctrl.execute_and_capture("p/x tcache"))
+    print(await ctrl.execute_and_capture("tcache"))
+    print(await ctrl.execute_and_capture("heap"))
+    print(await ctrl.execute_and_capture("disassemble tcache_init"))
+
     output = await ctrl.execute_and_capture("bins")
     for address in tcache_bin.fd_chain[:-1]:
         assert hex(address) in output
